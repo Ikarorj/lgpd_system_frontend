@@ -157,7 +157,7 @@ export default function AnalysisResultsPage() {
                 </button>
                 {complianceMutation.isError && (
                   <p className="text-sm text-danger-600 mt-3">
-                    {(complianceMutation.error as Error).message}
+                    Não foi possível gerar relatório de conformidade
                   </p>
                 )}
               </div>
@@ -197,7 +197,7 @@ export default function AnalysisResultsPage() {
                 {opinionMutation.isError && (
                   <div className="flex items-center gap-2 text-sm text-danger-700 bg-danger-50 rounded-lg px-4 py-3">
                     <AlertTriangle className="w-4 h-4 shrink-0" />
-                    {opinionMutation.error?.message ?? "Erro ao gerar parecer"}
+                    Não foi possível gerar parecer
                   </div>
                 )}
               </div>
