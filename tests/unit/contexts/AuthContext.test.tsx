@@ -2,25 +2,25 @@ import { render, screen, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AuthProvider, useAuth } from "../../../src/contexts/AuthContext";
 
-const mockUser = {
-  id: "user-1",
-  email: "joao@teste.com",
-  user_metadata: { name: "João Silva" },
-};
-
-const mockSupabase = {
+const mockSupabase = vi.hoisted(() => ({
   auth: {
     getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
     onAuthStateChange: vi.fn(() => ({
       data: { subscription: { unsubscribe: vi.fn() } },
     })),
     signInWithPassword: vi.fn().mockResolvedValue({
-      data: { user: mockUser },
+      data: {
+        user: {
+          id: "user-1",
+          email: "joao@teste.com",
+          user_metadata: { name: "João Silva" },
+        },
+      },
       error: null,
     }),
     signOut: vi.fn().mockResolvedValue({ error: null }),
   },
-};
+}));
 
 vi.mock("../../../src/lib/supabaseClient", () => ({
   supabase: mockSupabase,
@@ -68,8 +68,10 @@ describe("AuthContext", () => {
     );
   });
 
-  it("estado inicial tem isLoading false e isAuthenticated false", () => {
+  it("estado inicial tem isLoading false e isAuthenticated false", async () => {
     renderWithProvider();
+
+    await act(async () => {});
 
     expect(screen.getByTestId("isLoading")).toHaveTextContent("false");
     expect(screen.getByTestId("isAuthenticated")).toHaveTextContent("false");

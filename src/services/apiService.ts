@@ -88,6 +88,27 @@ apiClient.interceptors.response.use(
   },
 );
 
+export async function loginUser(
+  email: string,
+  password: string,
+): Promise<{ token: string; user: { id: string; email: string; name: string; role: string } }> {
+  const response = await apiClient.post("/auth/login", { email, password });
+  return response.data;
+}
+
+export async function registerUser(
+  email: string,
+  name: string,
+  password: string,
+): Promise<{ token: string; user: { id: string; email: string; name: string; role: string } }> {
+  const response = await apiClient.post("/auth/register", {
+    email,
+    name,
+    password,
+  });
+  return response.data;
+}
+
 export async function uploadFiles(
   files: File[],
   batchId?: string,
