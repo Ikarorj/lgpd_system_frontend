@@ -65,10 +65,8 @@ export async function pollUploadStatus(
       }
 
       setTimeout(poll, intervalMs);
-    } catch (err) {
-      onError(
-        err instanceof Error ? err.message : "Failed to poll upload status",
-      );
+    } catch {
+      onError("Erro ao verificar status do upload. Tente novamente.");
     }
   };
 

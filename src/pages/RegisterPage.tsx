@@ -28,12 +28,8 @@ export default function RegisterPage() {
       const { token, user } = await registerUser(email, name, password);
       login(token, user);
       navigate("/");
-    } catch (err: unknown) {
-      const apiError = err as { response?: { data?: { message?: string } } };
-      setError(
-        apiError?.response?.data?.message ??
-          "Erro ao cadastrar. Tente novamente.",
-      );
+    } catch {
+      setError("Erro ao cadastrar. Tente novamente.");
     } finally {
       setLoading(false);
     }

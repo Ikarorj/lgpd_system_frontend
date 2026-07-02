@@ -117,7 +117,9 @@ describe("RegisterPage", () => {
     fireEvent.click(screen.getByRole("button", { name: "Cadastrar" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Email já cadastrado")).toBeInTheDocument();
+      expect(
+        screen.getByText("Erro ao cadastrar. Tente novamente."),
+      ).toBeInTheDocument();
     });
 
     expect(mockNavigate).not.toHaveBeenCalled();

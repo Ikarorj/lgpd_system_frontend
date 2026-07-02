@@ -96,8 +96,8 @@ export function useUpload(): UseUploadReturn {
           setIsUploading(false);
         },
       );
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
+    } catch {
+      setError("Erro ao enviar arquivos. Tente novamente.");
       setIsUploading(false);
       pollingRef.current = false;
     }
