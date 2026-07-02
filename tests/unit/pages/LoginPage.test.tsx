@@ -85,7 +85,9 @@ describe("LoginPage", () => {
     fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Credenciais inválidas")).toBeInTheDocument();
+      expect(
+        screen.getByText("Erro ao fazer login. Verifique suas credenciais."),
+      ).toBeInTheDocument();
     });
 
     expect(mockNavigate).not.toHaveBeenCalled();
@@ -149,13 +151,17 @@ describe("LoginPage", () => {
     fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Credenciais inválidas")).toBeInTheDocument();
+      expect(
+        screen.getByText("Erro ao fazer login. Verifique suas credenciais."),
+      ).toBeInTheDocument();
     });
 
     fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
 
     await waitFor(() => {
-      expect(screen.queryByText("Credenciais inválidas")).not.toBeInTheDocument();
+      expect(
+        screen.queryByText("Erro ao fazer login. Verifique suas credenciais."),
+      ).not.toBeInTheDocument();
     });
   });
 });

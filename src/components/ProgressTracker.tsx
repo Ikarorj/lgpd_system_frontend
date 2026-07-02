@@ -89,8 +89,10 @@ export default function ProgressTracker({ files }: ProgressTrackerProps) {
             </p>
           )}
 
-          {file.error && (
-            <p className="text-xs text-danger-600 mt-1">{file.error}</p>
+          {file.status === "error" && (
+            <p className="text-xs text-danger-600 mt-1">
+              Erro ao processar arquivo. Tente novamente.
+            </p>
           )}
         </div>
       ))}

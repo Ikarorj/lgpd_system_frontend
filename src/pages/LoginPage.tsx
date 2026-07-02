@@ -21,12 +21,8 @@ export default function LoginPage() {
       const { token, user } = await loginUser(email, password);
       login(token, user);
       navigate("/");
-    } catch (err: unknown) {
-      const apiError = err as { response?: { data?: { message?: string } } };
-      setError(
-        apiError?.response?.data?.message ??
-          "Erro ao fazer login. Verifique suas credenciais.",
-      );
+    } catch {
+      setError("Erro ao fazer login. Verifique suas credenciais.");
     } finally {
       setLoading(false);
     }

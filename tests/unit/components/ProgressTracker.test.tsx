@@ -44,10 +44,12 @@ describe("ProgressTracker", () => {
   });
 
   it("renderiza status error com mensagem de erro", () => {
-    const entry = createEntry({ status: "error", error: "Falha na conexão" });
+    const entry = createEntry({ status: "error" });
     render(<ProgressTracker files={[entry]} />);
     expect(screen.getByText("Erro")).toBeInTheDocument();
-    expect(screen.getByText("Falha na conexão")).toBeInTheDocument();
+    expect(
+      screen.getByText("Erro ao processar arquivo. Tente novamente."),
+    ).toBeInTheDocument();
   });
 
   it("renderiza tamanho do arquivo", () => {

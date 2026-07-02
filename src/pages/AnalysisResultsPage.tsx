@@ -22,7 +22,6 @@ export default function AnalysisResultsPage() {
     data: extractionData,
     isLoading,
     isError,
-    error,
   } = useExtraction(extractionId);
 
   const { data: complianceData, refetch: refetchCompliance } = useQuery({
@@ -73,8 +72,7 @@ export default function AnalysisResultsPage() {
             Erro ao carregar resultados
           </h2>
           <p className="text-sm text-gray-500 mb-4">
-            {(error as Error)?.message ??
-              "Não foi possível carregar os resultados da extração."}
+            Não foi possível carregar os resultados da extração.
           </p>
           <button onClick={() => navigate("/")} className="btn-primary">
             Voltar ao Dashboard
