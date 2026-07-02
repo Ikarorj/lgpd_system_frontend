@@ -9,16 +9,17 @@ import {
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabaseClient";
 
-interface User {
+export interface User {
   id: string;
   email: string;
   name: string;
+  role: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (token: string, user: User) => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
@@ -31,6 +32,7 @@ function mapUser(supabaseUser: SupabaseUser): User {
     id: supabaseUser.id,
     email: supabaseUser.email ?? "",
     name: supabaseUser.user_metadata?.name ?? supabaseUser.email?.split("@")[0] ?? "",
+    role: supabaseUser.user_metadata?.role ?? "user",
   };
 }
 
@@ -68,15 +70,9 @@ export function AuthProvider({
     return () => subscription.unsubscribe();
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (error) throw error;
-    if (data.user) {
-      setUser(mapUser(data.user));
-    }
+  const login = useCallback(async (token: string, user: User) => {
+    localStorage.setItem("auth_token", token);
+    setUser(user);
   }, []);
 
   const register = useCallback(

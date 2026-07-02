@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserPlus, AlertTriangle } from "lucide-react";
+import { registerUser } from "../services/apiService";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { login } = useAuth();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -15,15 +17,22 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
 
+    if (password.length < 6) {
+      setError("A senha deve ter no mínimo 6 caracteres");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      await register(email, password);
+      const { token, user } = await registerUser(email, name, password);
+      login(token, user);
       navigate("/");
     } catch (err: unknown) {
-      const supabaseErr = err as { message?: string };
+      const apiError = err as { response?: { data?: { message?: string } } };
       setError(
-        supabaseErr?.message ?? "Erro ao cadastrar. Verifique os dados e tente novamente.",
+        apiError?.response?.data?.message ??
+          "Erro ao cadastrar. Tente novamente.",
       );
     } finally {
       setLoading(false);
@@ -52,6 +61,21 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
+            <label className="label" htmlFor="name">
+              Nome
+            </label>
+            <input
+              id="name"
+              type="text"
+              className="input"
+              placeholder="Seu nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              autoFocus
+            />
+          </div>
+          <div>
             <label className="label" htmlFor="email">
               Email
             </label>
@@ -63,7 +87,6 @@ export default function RegisterPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autoFocus
             />
           </div>
           <div>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { LogIn, AlertTriangle } from "lucide-react";
+import { loginUser } from "../services/apiService";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
@@ -17,12 +18,14 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await login(email, password);
+      const { token, user } = await loginUser(email, password);
+      login(token, user);
       navigate("/");
     } catch (err: unknown) {
-      const supabaseErr = err as { message?: string };
+      const apiError = err as { response?: { data?: { message?: string } } };
       setError(
-        supabaseErr?.message ?? "Email ou senha inválidos. Verifique suas credenciais.",
+        apiError?.response?.data?.message ??
+          "Erro ao fazer login. Verifique suas credenciais.",
       );
     } finally {
       setLoading(false);
