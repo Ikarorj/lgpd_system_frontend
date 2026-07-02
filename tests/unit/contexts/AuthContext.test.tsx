@@ -37,7 +37,14 @@ function TestComponent() {
       <div data-testid="isAuthenticated">{isAuthenticated ? "true" : "false"}</div>
       <button
         data-testid="btn-login"
-        onClick={() => login("joao@teste.com", "senha123")}
+        onClick={() =>
+          login("token-123", {
+            id: "user-1",
+            email: "joao@teste.com",
+            name: "João Silva",
+            role: "user",
+          })
+        }
       >
         Login
       </button>
@@ -98,10 +105,7 @@ describe("AuthContext", () => {
       screen.getByTestId("btn-login").click();
     });
 
-    expect(mockSupabase.auth.signInWithPassword).toHaveBeenCalledWith({
-      email: "joao@teste.com",
-      password: "senha123",
-    });
+    expect(localStorage.getItem("auth_token")).toBe("token-123");
   });
 
   it("logout limpa user e isAuthenticated", async () => {
