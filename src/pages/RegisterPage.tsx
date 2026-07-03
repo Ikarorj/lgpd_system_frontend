@@ -17,8 +17,20 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
 
-    if (password.length < 6) {
-      setError("A senha deve ter no mínimo 6 caracteres");
+    if (password.length < 8) {
+      setError("A senha deve ter no mínimo 8 caracteres");
+      return;
+    }
+    if (!/[A-Z]/.test(password)) {
+      setError("A senha deve conter pelo menos uma letra maiúscula");
+      return;
+    }
+    if (!/[a-z]/.test(password)) {
+      setError("A senha deve conter pelo menos uma letra minúscula");
+      return;
+    }
+    if (!/[0-9]/.test(password)) {
+      setError("A senha deve conter pelo menos um número");
       return;
     }
 
@@ -93,14 +105,14 @@ export default function RegisterPage() {
               id="password"
               type="password"
               className="input"
-              placeholder="Mínimo 6 caracteres"
+              placeholder="Mínimo 8 caracteres, maiúscula, minúscula e número"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              minLength={6}
+              minLength={8}
             />
             <p className="text-xs text-gray-400 mt-1">
-              Mínimo 6 caracteres
+              Mínimo 8 caracteres, 1 maiúscula, 1 minúscula e 1 número
             </p>
           </div>
           <button
